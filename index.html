@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MFTF — Music for the Future · Program Pyramid</title>
+<title>NV — Novel Voices · Program Pyramid</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,10 +25,8 @@
   /* PMHU Coral/Pink Accent */
   --accent: #f05c5c; 
   
-  /* Seasonal Mappings */
-  --spring: var(--accent); --spring-bg: #fff5f5; --spring-lo: #fca5a5;
-  --summer: var(--accent); --summer-bg: #fff5f5; --summer-lo: #fca5a5;
-  --fall: var(--accent);   --fall-bg: #fff5f5;   --fall-lo: #fca5a5;
+  /* Tier accent (used for subtitle text, week/slot chips, "now" column) */
+  --tier-bg: #fff5f5; --tier-lo: #fca5a5;
   
   /* Status Badges */
   --live: #4ebad9; 
@@ -40,18 +38,18 @@ html,body{height:100%;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
 
 /* HEADER */
-.hdr{display:flex;align-items:center;gap:1.25rem;padding:0.8rem 1.75rem;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;z-index:10;}
+.hdr{display:flex;align-items:center;gap:1.25rem;padding:0.8rem 1.75rem;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;z-index:10;overflow-x:auto;}
 .hdr-logo{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:500;letter-spacing:0.5px;color:var(--head);line-height:1.2;text-transform:uppercase;}
 .hdr-logo span{color:var(--accent);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:600;text-transform:none;}
 .hdr-div{width:1px;height:24px;background:var(--border2);}
 .hdr-eye{font-size:0.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
-.hdr-badges{display:flex;gap:.45rem;margin-left:auto;}
-.badge{font-size:.62rem;font-weight:600;letter-spacing:.05em;padding:.18rem .5rem;border-radius:3px;display:flex;align-items:center;gap:.28rem;}
+.hdr-badges{display:flex;gap:.45rem;margin-left:auto;flex-wrap:nowrap;flex-shrink:0;}
+.badge{font-size:.62rem;font-weight:600;letter-spacing:.05em;padding:.18rem .5rem;border-radius:3px;display:flex;align-items:center;gap:.28rem;white-space:nowrap;flex-shrink:0;}
 .badge-live{background:var(--live-bg);color:var(--live);border:1px solid #a7e2f2;}
 .badge-dev{background:var(--dev-bg);color:var(--dev);border:1px solid #d1d5db;}
 .bdot{width:5px;height:5px;border-radius:50%;background:currentColor;}
 .btn-wiki {font-size: .62rem;font-weight: 600;letter-spacing: .05em;text-transform: uppercase;padding: .18rem .6rem;border-radius: 3px;display: flex;align-items: center;gap: .28rem;background: #fff5f5; 
-  color: var(--accent); border: 1px solid var(--accent); text-decoration: none;
+  color: var(--accent); border: 1px solid var(--accent); text-decoration: none;white-space:nowrap;flex-shrink:0;
   transition: background 0.15s, color 0.15s;margin-left: 0.5rem;}
 .btn-wiki:hover { background: var(--accent); color: #ffffff;}
 
@@ -67,11 +65,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 
 /* DIAGRAM CONTAINER & SVG */
 .diagram-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:2.5rem;overflow:hidden;}
-.triangle-stage{display:flex;flex-direction:column;align-items:center;gap:.65rem;width:100%;max-width:540px;}
-.ov-link{align-self:flex-end;background:none;border:1px solid var(--border2);border-radius:4px;padding:.32rem .7rem;font-family:'Inter',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.03em;color:var(--accent);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
+.triangle-stage{display:flex;flex-direction:column;align-items:center;gap:.75rem;width:100%;max-width:540px;}
+.ov-link{align-self:center;background:none;border:1px solid var(--border2);border-radius:4px;padding:.32rem .8rem;font-family:'Inter',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.03em;color:var(--accent);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
 .ov-link:hover{background:var(--accent);color:#ffffff;border-color:var(--accent);}
 .ov-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.cycle-svg{width:100%;max-height:64vh;}
+.cycle-svg{width:100%;max-height:60vh;}
 
 /* SVG DIAGRAM INTERACTION STYLES */
 .sn { cursor:pointer; outline: none; }
@@ -80,11 +78,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 .sn:focus .node-bg, .sn.active .node-bg { stroke: #9ca3af; stroke-width: 1.5px; filter: brightness(0.96); }
 
 /* SCALE VIEW */
-.scale-wrap{flex:1;overflow-y:auto;padding:1.1rem 1.25rem;display:none;background:var(--bg);}
+.scale-wrap{flex:1;overflow:auto;padding:1.1rem 1.25rem;display:none;background:var(--bg);}
 .scale-wrap.visible{display:block;}
-.sc-grid{display:grid;grid-template-columns:80px repeat(4,1fr);gap:.4rem;margin-bottom:.4rem;align-items:start;}
-.sc-head{font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.45rem .55rem;border-radius:4px;text-align:center;line-height:1.4;background:var(--bg2);color:var(--head);border:1px solid var(--border2);}
-.sc-now{border-color:var(--accent);color:var(--accent);background:var(--spring-bg);}
+.pathway{display:grid;grid-template-columns:88px repeat(4,1fr);gap:.4rem;align-items:start;}
+.sc-corner{background:var(--bg);position:sticky;top:0;z-index:3;}
+.sc-head{font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.45rem .55rem;border-radius:4px;text-align:center;line-height:1.4;background:var(--bg2);color:var(--head);border:1px solid var(--border2);position:sticky;top:0;z-index:2;}
+.sc-now{border-color:var(--accent);color:var(--accent);background:var(--tier-bg);}
 .sr-label{font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:.4rem;line-height:1.4;}
 .sr-cell{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:.5rem .55rem;font-size:.7rem;color:var(--soft);line-height:1.55;}
 .sr-cell ul{list-style:none;}
@@ -124,10 +123,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 .cbb li{padding-left:.9rem;position:relative;}
 .cbb li::before{content:"—";position:absolute;left:0;color:var(--accent);font-size:.68rem;font-weight:bold;}
 
-/* Week grid */
+/* Slot / week grid (reused for curriculum slots + weekly cadence) */
 .wg{display:flex;flex-direction:column;gap:.45rem;margin-top:.65rem;}
-.wr{display:grid;grid-template-columns:54px 1fr;gap:.65rem;align-items:start;}
-.wn{font-size:.6rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--spring-bg);border:1px solid var(--spring-lo);border-radius:4px;padding:.28rem .35rem;text-align:center;line-height:1.35;}
+.wr{display:grid;grid-template-columns:64px 1fr;gap:.65rem;align-items:start;}
+.wn{font-size:.6rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--tier-bg);border:1px solid var(--tier-lo);border-radius:4px;padding:.28rem .35rem;text-align:center;line-height:1.35;}
 .wd{font-size:.78rem;color:var(--body);line-height:1.6;padding-top:.18rem;}
 
 /* Tags */
@@ -137,7 +136,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 .tag-dev{background:var(--dev-bg);color:var(--dev);border:1px solid #d1d5db;}
 .tag-n{background:var(--bg3);color:var(--soft);border:1px solid var(--border2);}
 
-/* Course cards */
+/* Curriculum cards */
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.65rem;}
 .cc{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:.65rem .75rem;}
 .cc-name{font-size:.75rem;font-weight:600;color:var(--head);margin-bottom:.3rem;display:flex;align-items:center;gap:.35rem;}
@@ -175,7 +174,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
   .hdr-div, .hdr-eye { display: none !important; }
   .hdr-badges { margin-left: 0 !important; flex-wrap: wrap !important; }
   .scale-wrap { overflow: auto !important; -webkit-overflow-scrolling: touch !important; padding: 15px !important; }
-  .sc-grid { min-width: 650px !important; }
+  .pathway { min-width: 650px !important; }
   .right { position: static !important; }
   .p-empty { display: none !important; }
   .sp.visible {
@@ -197,13 +196,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 <body>
 
 <header class="hdr">
-  <div class="hdr-logo">Music for the Future <span>/ MFTF</span></div>
+  <div class="hdr-logo">Novel Voices <span>/ NV</span></div>
   <div class="hdr-div"></div>
-  <div class="hdr-eye">Program Pyramid &amp; Scale Pathway · Working Draft · June 2026</div>
+  <div class="hdr-eye">Program Pyramid &amp; Scale Pathway · Working Draft · July 2026</div>
   <div class="hdr-badges">
     <div class="badge badge-live"><span class="bdot"></span>Live now</div>
     <div class="badge badge-dev"><span class="bdot"></span>In development</div>
-    <a href="https://sites.google.com/pmhu.org/pmhu-wiki/program-annual-planning-cycle/mftf-structure-strategy/" target="_blank" class="btn-wiki">Back to Wiki ↗&#xFE0E;</a>
+    <a href="https://sites.google.com/pmhu.org/pmhu-wiki/program-annual-planning-cycle/novel-voices-structure-strategy/" target="_blank" class="btn-wiki">Back to Wiki ↗&#xFE0E;</a>
   </div>
 </header>
 
@@ -218,98 +217,100 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
     <!-- PYRAMID SVG -->
     <div class="diagram-wrap" id="view-cycle">
       <div class="triangle-stage">
-        <button class="ov-link" onclick="showPanel('overview')">Program overview →</button>
-        <svg class="cycle-svg" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MFTF program pyramid: Fall residencies form the base, Spring production the middle tier, Summer premiere the peak">
+        <svg class="cycle-svg" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NV program pyramid: Cohort, the 2-year model for all students, forms the base and is live; Promising Students the middle tier is in development; Intensive Students the peak is in development">
 
           <!-- Status legend -->
-          <circle cx="22" cy="20" r="5" fill="none" stroke="#4ebad9" stroke-width="2"/>
+          <line x1="18" y1="24" x2="26" y2="16" stroke="#4ebad9" stroke-width="2" stroke-linecap="round"/>
           <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="23">live</text>
-          <circle cx="22" cy="36" r="5" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="3 3"/>
+          <line x1="18" y1="40" x2="26" y2="32" stroke="#636363" stroke-width="2" stroke-dasharray="3 3" stroke-linecap="round"/>
           <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="39">in dev</text>
 
-          <!-- TOP TIER — SUMMER (peak: the premiere) -->
-          <g class="sn" id="sn-summer" onclick="showPanel('summer')" tabindex="0" role="button" aria-label="Summer: premiere and workshops, the peak of the pyramid">
+          <!-- TOP TIER — INTENSIVE STUDENTS (peak: conservatory track, 1–2 max) -->
+          <g class="sn" id="sn-intensive" onclick="showPanel('intensive')" tabindex="0" role="button" aria-label="Intensive Students: conservatory track, the peak of the pyramid, in development">
             <polygon points="200,40 258.82,165 141.18,165" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-            <text font-family="Oswald,sans-serif" font-size="13" font-weight="500" fill="#000000" x="200" y="108" text-anchor="middle">SUMMER</text>
-            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="124" text-anchor="middle">Lincoln Center premiere</text>
-            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="136" text-anchor="middle">+ new workshops</text>
-            <text font-family="Inter,sans-serif" font-size="7" font-weight="600" fill="#4ebad9" x="200" y="149" text-anchor="middle">Creative writing: live</text>
+            <text font-family="Oswald,sans-serif" font-size="11.5" font-weight="500" fill="#000000" x="200" y="108" text-anchor="middle">INTENSIVE</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="124" text-anchor="middle">1–2 students max</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="136" text-anchor="middle">Conservatory track</text>
+            <text font-family="Inter,sans-serif" font-size="7" font-weight="600" fill="#636363" x="200" y="149" text-anchor="middle">In development</text>
           </g>
 
-          <!-- MIDDLE TIER — SPRING (production) -->
-          <g class="sn" id="sn-spring" onclick="showPanel('spring')" tabindex="0" role="button" aria-label="Spring: production and check-in tours, the middle tier">
+          <!-- MIDDLE TIER — PROMISING STUDENTS (2-year cohort) -->
+          <g class="sn" id="sn-promising" onclick="showPanel('promising')" tabindex="0" role="button" aria-label="Promising Students: the 2-year cohort track, the middle tier, in development">
             <polygon points="136.47,175 263.53,175 310.59,275 89.41,275" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-            <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="200" y="210" text-anchor="middle">SPRING</text>
-            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="228" text-anchor="middle">4-wk production</text>
-            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="242" text-anchor="middle">+ check-in tours</text>
+            <text font-family="Oswald,sans-serif" font-size="13.5" font-weight="500" fill="#000000" x="200" y="210" text-anchor="middle">PROMISING</text>
+            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="228" text-anchor="middle">Extra support · ABRSM</text>
+            <text font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#636363" x="200" y="242" text-anchor="middle">In development</text>
           </g>
 
-          <!-- BASE TIER — FALL (residencies: broadest reach) -->
-          <g class="sn" id="sn-fall" onclick="showPanel('fall')" tabindex="0" role="button" aria-label="Fall: residencies, the base of the pyramid">
+          <!-- BASE TIER — COHORT (the 2-year model, all enrolled students) -->
+          <g class="sn" id="sn-cohort" onclick="showPanel('cohort')" tabindex="0" role="button" aria-label="Cohort: the 2-year model for all enrolled students, the base of the pyramid, live">
             <polygon points="84.71,285 315.29,285 360,380 40,380" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-            <text font-family="Oswald,sans-serif" font-size="15" font-weight="500" fill="#000000" x="200" y="318" text-anchor="middle">FALL</text>
-            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="336" text-anchor="middle">Residencies · 4 genre tracks</text>
-            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="600" fill="#4ebad9" x="200" y="351" text-anchor="middle">Classical + Writing: live</text>
+            <text font-family="Oswald,sans-serif" font-size="16" font-weight="500" fill="#000000" x="200" y="318" text-anchor="middle">COHORT</text>
+            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="336" text-anchor="middle">2-year model · all students</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="600" fill="#4ebad9" x="200" y="351" text-anchor="middle">Live</text>
           </g>
+
+          <!-- STATUS LINES — a single line parallel to each tier's LEFT edge, sitting just outside the tier so it never crosses the text -->
+          <!-- Intensive (top) — in development -->
+          <line x1="181.18" y1="49.46" x2="134.12" y2="149.46" stroke="#636363" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round" opacity="0.85"/>
+          <!-- Promising (middle) — in development -->
+          <line x1="120.00" y1="179.46" x2="82.36" y2="259.46" stroke="#636363" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round" opacity="0.85"/>
+          <!-- Cohort (base) — live -->
+          <line x1="68.24" y1="289.46" x2="32.95" y2="364.46" stroke="#4ebad9" stroke-width="2.25" stroke-linecap="round" opacity="0.95"/>
 
         </svg>
+        <button class="ov-link" onclick="showPanel('overview')">Program overview →</button>
       </div>
     </div>
 
     <!-- SCALE PATHWAY VIEW -->
     <div class="scale-wrap" id="view-scale">
-      <div class="sc-grid">
-        <div></div>
+      <div class="pathway">
+        <div class="sc-corner"></div>
         <div class="sc-head sc-now">Now · Pilot</div>
-        <div class="sc-head sc-3yr">3 Years · Regional</div>
-        <div class="sc-head sc-5yr">5 Years · Multi-region</div>
-        <div class="sc-head sc-10yr">10 Years · National</div>
-      </div>
-      <div class="sc-grid">
+        <div class="sc-head">3 Years · Cohort Network</div>
+        <div class="sc-head">5 Years · Full Rotation</div>
+        <div class="sc-head">10 Years · Multi-Region</div>
+
         <div class="sr-label">Reach</div>
-        <div class="sr-cell"><ul><li>12–16 facility partners</li><li>1–2 core geographies</li></ul></div>
-        <div class="sr-cell"><ul><li>24 facility partners</li><li>3 geographies, 8 each</li></ul></div>
-        <div class="sr-cell"><ul><li>32 facility partners</li><li>4 geographies, 8 each</li></ul></div>
-        <div class="sr-cell"><ul><li>50 facility partners</li><li>National footprint</li></ul></div>
-      </div>
-      <div class="sc-grid">
+        <div class="sr-cell"><ul><li>3 sites: Kenya, Palestine, Iraq (paused)</li><li>Kenya cohort yr 2, Palestine yr 1 pilot</li></ul></div>
+        <div class="sr-cell"><ul><li>Kenya + Palestine running 2nd-year cohorts</li><li>8–10 students per site</li><li>Iraq: runway to relaunch</li></ul></div>
+        <div class="sr-cell"><ul><li>All 3 sites running cohorts</li><li>Rotating admission each site</li><li>New cohort selected annually per site</li></ul></div>
+        <div class="sr-cell"><ul><li>Expanded to eventual sites</li><li>India · San Salvador · South Africa · TBD</li><li>Established multi-region network</li></ul></div>
+
         <div class="sr-label">Annual cycle</div>
-        <div class="sr-cell"><ul><li>Holiday tour + celebration concerts</li><li>Spring check-in / touchpoint</li></ul></div>
-        <div class="sr-cell"><ul><li>Holiday tour per geography</li><li>Standardized check-in model</li><li>Year-round cadence</li></ul></div>
-        <div class="sr-cell"><ul><li>4-geography holiday tour</li><li>Repeat engagements deepen trust</li></ul></div>
-        <div class="sr-cell"><ul><li>Holiday + spring cycles nationwide</li><li>Flagship premiere moments</li><li>Drop-in/maintenance workshops</li></ul></div>
-      </div>
-      <div class="sc-grid">
+        <div class="sr-cell"><ul><li>Kenya on cohort cadence</li><li>Palestine piloting Year 1</li><li>Spring audition visits (March)</li></ul></div>
+        <div class="sr-cell"><ul><li>Full cadence live at Kenya + Palestine</li><li>Aug IMS relaunch, chamber festivals</li><li>Iraq restructuring conversation underway</li></ul></div>
+        <div class="sr-cell"><ul><li>All sites synced to full annual cadence</li><li>IMS an established summer tradition</li><li>Lincoln Center livestream each May</li></ul></div>
+        <div class="sr-cell"><ul><li>Mature international touring calendar</li><li>New-site onboarding folded into standard cycle</li></ul></div>
+
         <div class="sr-label">Program mix</div>
-        <div class="sr-cell"><ul><li>Classical ✓ live</li><li>Creative writing ✓ live</li><li>Songwriting: emerging</li><li>Jazz: build by yr 3</li></ul></div>
-        <div class="sr-cell"><ul><li>Jazz + songwriting operational</li><li>Begin piloting Musical Theatre</li><li>Min. 4 venues per category</li></ul></div>
-        <div class="sr-cell"><ul><li>Multiple categories reliably</li><li>Clear pathways by facility fit</li><li>Larger touring roster</li></ul></div>
-        <div class="sr-cell"><ul><li>Full portfolio at maturity</li><li>10 courses/category/year</li><li>Short residencies + accreditation</li></ul></div>
-      </div>
-      <div class="sc-grid">
+        <div class="sr-cell"><ul><li>Cohort ✓ live, one-off lessons phasing out by end of 2026–27 (Don Speer's piano studio excepted)</li><li>Promising Students launching (extra support)</li><li>Intensive Students: not yet formalized</li></ul></div>
+        <div class="sr-cell"><ul><li>One-off lessons fully phased out at Kenya + Palestine</li><li>Promising Students operational, 2 sites</li><li>Intensive: first 1–2 candidates per site</li></ul></div>
+        <div class="sr-cell"><ul><li>Cohort-only base at all 3 sites</li><li>Promising Students pipeline reliable</li><li>Intensive: track record of auditions</li></ul></div>
+        <div class="sr-cell"><ul><li>Full pathway at maturity, every site</li><li>Every student: base cohort → Promising gets more → Intensive gets the most</li><li>Financial aid pipeline established</li></ul></div>
+
         <div class="sr-label">Building</div>
-        <div class="sr-cell"><ul><li>Replicable program units</li><li>Clear partner expectations</li></ul></div>
-        <div class="sr-cell"><ul><li>Artist pipeline: recruit → audition → train</li><li>Curriculum scaling system</li></ul></div>
-        <div class="sr-cell"><ul><li>Regional delivery capacity</li><li>Retention systems</li></ul></div>
-        <div class="sr-cell"><ul><li>National delivery engine</li><li>Evidence + storytelling system</li></ul></div>
-      </div>
-      <div class="sc-grid">
+        <div class="sr-cell"><ul><li>2-year cohort package defined</li><li>Alumni-assisted audition process</li><li>New Kenya partner space search</li></ul></div>
+        <div class="sr-cell"><ul><li>Cohort certification finalized</li><li>ABRSM testing pipeline</li><li>Field coordinator per site</li></ul></div>
+        <div class="sr-cell"><ul><li>Regional delivery capacity, 3 sites</li><li>Teacher-training pipeline feeds back in</li></ul></div>
+        <div class="sr-cell"><ul><li>International delivery engine</li><li>Alumni-driven selection + teaching pipeline</li><li>Evidence + storytelling system</li></ul></div>
+
         <div class="sr-label">Cost drivers</div>
-        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">Artists, Travel, Staff time, Curriculum</div>
-        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">Training, Recruitment, Logistics, Evaluation</div>
-        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">Multi-region touring, Expanded roster, Partner support</div>
-        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">National operations, Curriculum portfolio, Measurement + media</div>
-      </div>
-      <div class="sc-grid">
+        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">Instruments, tablets, luthier tools, partner space, transportation, snacks, ABRSM fees</div>
+        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">+ Guest elective instructors, festival travel, cohort certification</div>
+        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">+ IMS USA logistics, expanded teacher rotation, financial aid</div>
+        <div class="sr-cell" style="color:var(--muted);font-size:.7rem;">+ New-site onboarding, touring contingency, Lincoln Center production</div>
+
         <div class="sr-label">Locations</div>
-        <div class="sr-cell"><ul><li>CA (Chowchilla, Bay Area)</li><li>CT, NV expanding</li></ul></div>
-        <div class="sr-cell"><ul><li>NY (10 venues)</li><li>CT (10 venues)</li><li>CA (10+ venues)</li></ul></div>
-        <div class="sr-cell"><ul><li>Pacific: CA, NV (10)</li><li>Mountain: UT, CO (10)</li><li>Central: Chicago (10)</li><li>East/Atlantic: NY, CT</li></ul></div>
-        <div class="sr-cell"><ul><li>50 venues, 4 geographies</li><li>10 venues/holiday tour</li><li>Same musicians return each year</li></ul></div>
+        <div class="sr-cell"><ul><li>Kenya (cohort yr 2)</li><li>Palestine (yr 1 pilot)</li><li>Iraq (paused)</li></ul></div>
+        <div class="sr-cell"><ul><li>Kenya + Palestine (rotating 2-yr cohorts)</li><li>Iraq (runway to relaunch)</li></ul></div>
+        <div class="sr-cell"><ul><li>Kenya, Palestine, Iraq</li><li>All active with running cohorts</li></ul></div>
+        <div class="sr-cell"><ul><li>Kenya, Palestine, Iraq</li><li>+ Eventual: India, San Salvador, South Africa, TBD</li><li>Per staffing / funding availability</li></ul></div>
       </div>
     </div>
 
-    <div class="dfn">Source: Planning sketch (Dana &amp; Molly) + Subscription Model Brainstorm + Scale Pathway PDF · <span style="color:var(--dev)">✦</span> = open question for team · Pyramid reads base → peak: Fall residencies reach the most facilities, Spring narrows to one production, Summer culminates in a single premiere.</div>
+    <div class="dfn">Source: 2-Year Cohort Package Directive (Program Manager) · <span style="color:var(--dev)">✦</span> = open question for team · Pyramid reads base → peak: Cohort is the shared 2-year curriculum every enrolled student sits on (one-off lessons phasing out, Don Speer's piano studio excepted), Promising Students get more on top of that, and the 1–2 Intensive Students per site get the most — direct support toward U.S. higher ed.</div>
   </div>
 
   <!-- RIGHT: PANELS -->
@@ -326,208 +327,238 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
     <div class="sp" id="panel-overview">
       <div class="ph">
         <div class="ph-top">
-          <div><div class="ph-s">Program Overview</div><div class="ph-title">Music for the Future</div><div class="ph-time">Justice settings · Annual cycle · Building toward national scale</div></div>
+          <div><div class="ph-s">Program Overview</div><div class="ph-title">Novel Voices</div><div class="ph-time">International music education · 2-year cohort model · Kenya · Palestine · Iraq</div></div>
           <button class="cb-btn" onclick="closePanel()">close ×</button>
         </div>
         <div class="st-row">
-          <div class="sp-pill sp-live"><span class="sp-dot"></span>Classical</div>
-          <div class="sp-pill sp-live"><span class="sp-dot"></span>Creative Writing</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Songwriting (emerging)</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Jazz (priority)</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Musical Theatre (not yet)</div>
+          <div class="sp-pill sp-live"><span class="sp-dot"></span>Cohort</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Promising Students (launching)</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Intensive Students (not yet formalized)</div>
         </div>
       </div>
       <div class="pb">
         <div class="cb">
           <div class="cbl">What this is</div>
-          <div class="cbb">A year-round creative music program for incarcerated individuals. Participants move through a seasonal arc — fall residencies deliver coursework across the widest set of facilities, spring narrows to produce a single full musical theatre work, and summer culminates in a premiere livestreamed from Lincoln Center to all partner facilities.</div>
+          <div class="cbb">Novel Voices brings music education to students in Kenya, Palestine, and Iraq. The program is moving every enrolled student onto one cohort curriculum — no more one-off individual lessons. From that shared base, tiers layer on more: Promising Students get the full 2-year cohort track, and the 1–2 Intensive Students per site get the most — conservatory-focused study, possibly with financial aid.</div>
         </div>
         <div class="cb">
-          <div class="cbl">Current program structure</div>
+          <div class="cbl">Immediate direction — one-off lessons phasing out</div>
+          <div class="cbb">By the end of the 2026–27 year, every site moves to cohort-only. One-off, individual lessons that aren't part of a cohort are being phased out everywhere <strong>except Don Speer's piano studio</strong>, which continues regardless.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Program manager directive — now live</div>
           <div class="cbb"><ul>
-            <li>7-week program: 5-day in-person residency + 6-week remote course</li>
-            <li>Taught by San Francisco Conservatory of Music (SFCM) faculty</li>
-            <li>Certificates of Completion from PMHU &amp; SFCM</li>
-            <li>2,400+ participants to date</li>
-            <li>Primary partner: Five Keys (CA) · Expanding: CT, NV</li>
+            <li>Deploy Year 2 of the Kenya cohort</li>
+            <li>Launch a new Year 1 cohort pilot in Palestine</li>
+            <li>Put Iraq on pause — restructuring conversation before bringing the cohort model there</li>
           </ul></div>
         </div>
         <div class="cb">
-          <div class="cbl">Core program team</div>
+          <div class="cbl">Core support team</div>
           <div class="cbb"><ul>
-            <li>Dana — artistic lead, co-writes the musical, leads acting instruction</li>
-            <li>Michael Shoff — co-writer, present through full 4-week production</li>
-            <li>SFCM faculty — remote course instruction</li>
-            <li>Musician teams + TAs embedded per genre track</li>
+            <li>Lameck and Khevy (program alumni) help run the audition/selection process</li>
+            <li>Possibly adding Brenda — pending confirmation with the teachers</li>
+            <li>Field coordinators manage on-the-ground logistics per site (transportation and snacks already covered in Kenya)</li>
           </ul></div>
         </div>
         <div class="vs">
-          <div class="cbl">10-year targets</div>
+          <div class="cbl">Cohort model, at a glance</div>
           <div class="vg">
-            <div class="vstat"><strong>50</strong><span>facility partners</span></div>
-            <div class="vstat"><strong>4</strong><span>geographies</span></div>
-            <div class="vstat"><strong>10</strong><span>courses per category / yr</span></div>
-            <div class="vstat"><strong>4</strong><span>full accredited course tracks</span></div>
+            <div class="vstat"><strong>8</strong><span>students per cohort, per site</span></div>
+            <div class="vstat"><strong>2</strong><span>years per cohort</span></div>
+            <div class="vstat"><strong>1–2</strong><span>max Intensive Students / site</span></div>
+            <div class="vstat"><strong>3</strong><span>active sites (Kenya, Palestine, Iraq)</span></div>
           </div>
         </div>
         <div class="tbd">
-          <div class="tbd-l">✦ Open questions for Dana &amp; Molly</div>
-          <div class="tbd-b">Is the 9-week accredited course format confirmed or still being secured for any track? What is the target cohort size per geography per year? How does the artist pipeline (recruit → audition → train) currently work and who owns it?</div>
+          <div class="tbd-l">✦ Open questions for the team</div>
+          <div class="tbd-b">Has Brenda been confirmed to help with auditions? What certification body issues the 2-year cohort completion credential? Which sites will send students to the relaunched International Music Sessions in August 2029, and how will participants be selected?</div>
         </div>
       </div>
     </div>
 
-    <!-- SPRING -->
-    <div class="sp" id="panel-spring">
+    <!-- COHORT -->
+    <div class="sp" id="panel-cohort">
       <div class="ph">
         <div class="ph-top">
-          <div><div class="ph-s">Spring</div><div class="ph-title">Production &amp; Check-in Tours</div><div class="ph-time">February – April · One 4-week production + one-day check-in visits</div></div>
+          <div><div class="ph-s">Cohort</div><div class="ph-title">The 2-Year Model</div><div class="ph-time">Kenya · Palestine · Iraq (paused) · Every enrolled student, both years</div></div>
           <button class="cb-btn" onclick="closePanel()">close ×</button>
         </div>
         <div class="st-row">
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Musical Theatre — not yet</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Check-in tours — not yet</div>
+          <div class="sp-pill sp-live"><span class="sp-dot"></span>Kenya — active</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Palestine — transitioning</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Iraq — paused</div>
         </div>
       </div>
       <div class="pb">
         <div class="cb">
-          <div class="cbl">February — Pre-production</div>
-          <div class="cbb">Dana + Michael complete the musical. The production is co-written — they bring a framework, and Week 1 of the in-person residency finishes the writing together with students.</div>
+          <div class="cbl">What this tier is — where we're headed</div>
+          <div class="cbb">The base of the pyramid is every enrolled student on the shared 2-year cohort curriculum. One-off, individual lessons outside a cohort are being phased out — the only exception is Don Speer's piano studio, which continues regardless. From this shared base, Promising Students get more, and Intensive Students get the most.</div>
         </div>
         <div class="cb">
-          <div class="cbl">March — 4-week Musical Theatre production</div>
-          <div class="cbb">One facility selected per year. Special category — only one prison per cycle, selected annually. Michael + Dana are present the entire four weeks.</div>
+          <div class="cbl">Phase-out timeline, by site</div>
+          <div class="cbb"><ul>
+            <li>Kenya: one-off lessons continue only through the 2026–27 year, then stop — except Don Speer's piano studio</li>
+            <li>Palestine: one-off lessons wind down as the new Year 1 cohort pilot ramps up this year</li>
+            <li>Iraq: paused. The team is restructuring and plans to stay in touch about when and how the cohort model arrives there</li>
+          </ul></div>
+        </div>
+        <div class="cb">
+          <div class="cbl">The 2-year cohort package</div>
+          <div class="cbb"><ul>
+            <li>8 students per site (cushion for 2 more — 10 total if absolutely necessary)</li>
+            <li>Local partner space with high-speed internet (already in the works in Kenya)</li>
+            <li>Materials provided: instruments, tablets, luthier tools (instruments and some luthier tools already in place in Kenya)</li>
+            <li>Transportation provided (already handled in Kenya, managed by the field coordinator)</li>
+            <li>Snacks provided (already covered in Kenya by the field coordinator)</li>
+            <li>Juilliard/Carnegie certificate offered on completion</li>
+          </ul></div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Audition process — entry into the cohort</div>
+          <div class="cbb">Lameck and Khevy (alumni) help run selection, with Brenda a possible addition pending confirmation with the teachers. The process is recommendation-based but stays open to new students outside the existing "family."</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Year 1 curriculum — 4 slots per semester (13 weeks)</div>
           <div class="wg">
-            <div class="wr"><div class="wn">Week 1</div><div class="wd">Finish writing the production with students — collaborative completion of the musical</div></div>
-            <div class="wr"><div class="wn">Week 2</div><div class="wd">Students begin acting lessons with Dana</div></div>
-            <div class="wr"><div class="wn">Week 3</div><div class="wd">Full production — set, costumes, lighting</div></div>
-            <div class="wr"><div class="wn">Week 4</div><div class="wd">Bring in musicians. Rehearse all week live together. Celebration performance on the final day.</div></div>
+            <div class="wr"><div class="wn">Slot 1</div><div class="wd">Music Theory — weekly. Must reach ABRSM Level 8 by year 2.</div></div>
+            <div class="wr"><div class="wn">Slot 2</div><div class="wd">Ear Training — weekly. Requires 4 semesters of training.</div></div>
+            <div class="wr"><div class="wn">Slot 3</div><div class="wd">Lessons — one hour, weekly, plus a monthly studio class with the full cohort together; teachers rotate 6x per year.</div></div>
+            <div class="wr"><div class="wn">Slot 4</div><div class="wd">Electives — Fall: two 5-week courses, Luthier Training (Iris Zhulla or a referral) and Practicing with Neuroscience (Molly Gebrian) or Deliberate Practice (Jason Haaheim). Spring: full-semester Orchestra Project with Brian Mwanika Audi.</div></div>
           </div>
         </div>
         <div class="cb">
-          <div class="cbl">March / April — Check-in tours</div>
-          <div class="cbb"><ul>
-            <li>One-day visits to other partner facilities — similar format to holiday tours</li>
-            <li>Workshops + preview clips of Musical Theatre production in progress</li>
-            <li>Potentially over Zoom for more distant facilities</li>
-          </ul></div>
-        </div>
-        <div class="tbd">
-          <div class="tbd-l">✦ Open questions</div>
-          <div class="tbd-b">What is the selection criteria for the production facility — does it rotate or is Chowchilla the default? Who handles logistics vs. artistic direction during the 4-week block? How many check-in tours are realistic per spring cycle currently? Does "preview clips" mean recorded material or live excerpts?</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SUMMER -->
-    <div class="sp" id="panel-summer">
-      <div class="ph">
-        <div class="ph-top">
-          <div><div class="ph-s">Summer</div><div class="ph-title">Premiere, Clips Tours &amp; New Workshops</div><div class="ph-time">May – August · Lincoln Center livestream capstone</div></div>
-          <button class="cb-btn" onclick="closePanel()">close ×</button>
-        </div>
-        <div class="st-row">
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Theatre clips tours — not yet</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Lincoln Center premiere — aspirational</div>
-          <div class="sp-pill sp-live"><span class="sp-dot"></span>Creative writing workshops — live</div>
-        </div>
-      </div>
-      <div class="pb">
-        <div class="cb">
-          <div class="cbl">May / June — Musical selections / clips tours</div>
-          <div class="cbb"><ul>
-            <li>Excerpts from the Spring production travel to other partner facilities</li>
-            <li>Participants at non-production facilities experience the work</li>
-            <li>Not yet running — in development</li>
-          </ul></div>
-        </div>
-        <div class="cb">
-          <div class="cbl">Summer capstone — Lincoln Center Premiere &amp; Livestream</div>
-          <div class="cbb"><ul>
-            <li>Actors from the Spring Musical Theatre production perform at Lincoln Center Theater</li>
-            <li>Their writing is produced by Lincoln Center — annual event</li>
-            <li>Livestreamed to all 50 partner venues across the US</li>
-            <li>The shared goal all participants across all facilities are working toward</li>
-            <li>All facilities see their participants' work in real time</li>
-          </ul></div>
-        </div>
-        <div class="cb">
-          <div class="cbl">July / August — New prompt workshops</div>
-          <div class="cbb"><ul>
-            <li>New creative writing + poetry workshops begin — seeding the next cycle</li>
-            <li>"Music Moves Us" curriculum: writing poetry/rap from key source material</li>
-            <li>1 musician improvising per session</li>
-            <li>Material feeds directly into Fall Jazz and Classical courses</li>
-            <li>10 total creative writing sessions at full scale</li>
-          </ul></div>
-        </div>
-        <div class="tags">
-          <span class="tag tag-live">Creative writing: live</span>
-          <span class="tag tag-dev">Lincoln Center: in dev</span>
-          <span class="tag tag-dev">Clips tours: in dev</span>
-        </div>
-        <div class="tbd">
-          <div class="tbd-l">✦ Open questions</div>
-          <div class="tbd-b">Is the Lincoln Center partnership confirmed or is this the target venue? Is it Lincoln Center Theater specifically or another space in that network? Who attends the premiere — families, funders, facility staff, public? How does summer creative writing material connect mechanically to Fall Jazz/Classical courses?</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FALL -->
-    <div class="sp" id="panel-fall">
-      <div class="ph">
-        <div class="ph-top">
-          <div><div class="ph-s">Fall</div><div class="ph-title">Residencies</div><div class="ph-time">September – November · 4 genre tracks · Celebration concerts in November</div></div>
-          <button class="cb-btn" onclick="closePanel()">close ×</button>
-        </div>
-        <div class="st-row">
-          <div class="sp-pill sp-live"><span class="sp-dot"></span>Classical</div>
-          <div class="sp-pill sp-live"><span class="sp-dot"></span>Creative Writing</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Songwriting (almost)</div>
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Jazz — priority: get moving</div>
-        </div>
-      </div>
-      <div class="pb">
-        <div class="cb">
-          <div class="cbl">Course structure — 10-year model</div>
-          <div class="cbb">Each genre track runs two formats simultaneously. All tracks start in September. Celebration concerts in November for all.</div>
+          <div class="cbl">Year 2 curriculum</div>
           <div class="cg">
             <div class="cc">
-              <div class="cc-name"><span class="ldot"></span>Classical</div>
-              <div class="cc-stat"><em>4/10</em> full 9-week accredited<br><em>6/10</em> 1-week intensive<br>Start September</div>
+              <div class="cc-name"><span class="ddot"></span>Core slots continue</div>
+              <div class="cc-stat">Theory / Ear Training / Lessons<br>Same weekly structure as Year 1</div>
             </div>
             <div class="cc">
-              <div class="cc-name"><span class="ldot"></span>Creative Writing</div>
-              <div class="cc-stat"><em>4/10</em> full 9-week accredited<br><em>6/10</em> 1-week intensive<br>"Music Moves Us" curriculum</div>
+              <div class="cc-name"><span class="ddot"></span>Fall elective</div>
+              <div class="cc-stat">Teacher Training<br><em>Laura Seay</em> — the only elective locked in so far</div>
             </div>
             <div class="cc">
-              <div class="cc-name"><span class="ddot"></span>Songwriting</div>
-              <div class="cc-stat"><em>4/10</em> full 9-week accredited<br><em>6/10</em> 1-week intensive<br>Full course not yet secured</div>
+              <div class="cc-name"><span class="ddot"></span>Fall elective</div>
+              <div class="cc-stat">Performance Psychology<br><em>Dr. Noa Kageyama</em></div>
             </div>
             <div class="cc">
-              <div class="cc-name"><span class="ddot"></span>Jazz</div>
-              <div class="cc-stat"><em>4/10</em> full 9-week accredited<br><em>6/10</em> 1-week intensive<br><span style="color:var(--accent);font-weight:600;">No jazz yet — priority build</span></div>
+              <div class="cc-name"><span class="ddot"></span>Spring</div>
+              <div class="cc-stat">Orchestra Project<br>Full semester (10 weeks) · <em>Brian Mwanika Audi</em></div>
             </div>
           </div>
         </div>
         <div class="cb">
-          <div class="cbl">Staffing model</div>
-          <div class="cbb"><ul>
-            <li>Full musician teams embedded per genre track</li>
-            <li>TAs embedded in each track</li>
-            <li>Modified workbooks for varying knowledge levels</li>
-            <li>Level-selection quiz — aspirational, to be built</li>
-            <li>Michael Shoff: 9-week course lead (scope to confirm)</li>
-            <li>Dana: auditions role during fall (scope to confirm)</li>
-          </ul></div>
+          <div class="cbl">Culminating moment</div>
+          <div class="cbb">Mid-May: a livestreamed award ceremony from Lincoln Center. Every student who completes the coursework receives their Juilliard/Carnegie certificate there — regardless of whether they go on to Promising or Intensive.</div>
         </div>
         <div class="cb">
-          <div class="cbl">Key design tension (from planning docs)</div>
-          <div class="cbb">"Better to have 10 venues? Or to be in touch for 9 weeks?" — this is a core question to work through with Michael Shoff. It's the fundamental reach vs. depth tradeoff for the program.</div>
+          <div class="cbl">Locations</div>
+          <div class="gg">
+            <div class="gc"><div class="gc-r">Kenya</div><div class="gc-v">Cohort year 2 · One-off lessons phasing out</div></div>
+            <div class="gc"><div class="gc-r">Palestine</div><div class="gc-v">Year 1 cohort pilot launching</div></div>
+            <div class="gc"><div class="gc-r">Iraq</div><div class="gc-v">Paused · Restructuring</div></div>
+            <div class="gc"><div class="gc-r">Eventual</div><div class="gc-v">India · San Salvador · South Africa · TBD</div></div>
+          </div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Immediate needs</div>
+          <div class="cbb"><ul>
+            <li>Find a new Kenya partner space for lessons</li>
+            <li>Finalize 2-year cohort program certification</li>
+            <li>Build the ABRSM testing plan for graduating students</li>
+            <li>Transition every site to cohort-only structure — begin the cohort conversation with Palestine, phase out Kenya's non-cohort lessons except Don Speer's piano studio, keep Iraq paused for now</li>
+          </ul></div>
         </div>
         <div class="tbd">
           <div class="tbd-l">✦ Open questions</div>
-          <div class="tbd-b">Is the 9-week accredited format secured for any track yet? What does Dana's auditions role in Fall entail — selecting participants, musicians, or both? Do Fall cohort participants flow into the Spring Musical Theatre production, or are those separate pools? Who is building the level-selection quiz and on what timeline?</div>
+          <div class="tbd-b">How many students are currently enrolled at each site? Has Brenda been confirmed for the audition team? What does "cohort 2-year program certification" actually require, and who issues it? Is the new Kenya partner space secured yet?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMISING STUDENTS -->
+    <div class="sp" id="panel-promising">
+      <div class="ph">
+        <div class="ph-top">
+          <div><div class="ph-s">Promising Students</div><div class="ph-title">Extra Support Within the Cohort</div><div class="ph-time">Higher-ed potential · ABRSM-track · The step above the base cohort</div></div>
+          <button class="cb-btn" onclick="closePanel()">close ×</button>
+        </div>
+        <div class="st-row">
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>ABRSM funding — in development</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Cut-off criteria — not yet defined</div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="cb">
+          <div class="cbl">What this tier is</div>
+          <div class="cbb">Within the cohort, Promising Students are the ones showing real potential for higher-education opportunities down the line. They get more than the base cohort curriculum — extra attention, extra resources — without yet being the 1–2 conservatory-track Intensive Students.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">ABRSM — the clearest marker</div>
+          <div class="cbb">Promising Students are likely the cut-off group we actively encourage to sit ABRSM exams — and PMHU covers the testing fees for them. Progress toward ABRSM levels (Year 1 students are already tracking toward Level 8 by year 2) is a natural signal for identifying who belongs in this tier.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">What else likely comes with it</div>
+          <div class="cbb"><ul>
+            <li>Extra one-on-one coaching time with lead teachers, beyond the standard weekly lesson slot</li>
+            <li>Priority placement in visiting-artist masterclasses and workshops during festival visits</li>
+            <li>First look at solo repertoire spots in cohort concerts</li>
+            <li>Additional practice materials or method books beyond the standard kit</li>
+            <li>Closer, more frequent progress tracking — teachers flagging students on pace for Promising status each term</li>
+            <li>Optional summer bridge sessions, where staffing allows, to keep momentum between cohort years</li>
+          </ul></div>
+        </div>
+        <div class="tbd">
+          <div class="tbd-l">✦ Open questions</div>
+          <div class="tbd-b">What's the actual ABRSM level or grade that defines the Promising cut-off? Who decides — teacher recommendation, ABRSM results, or both? Realistically, how many Promising Students per site? What does "extra support" cost per student, and is it budgeted yet?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTENSIVE STUDENTS -->
+    <div class="sp" id="panel-intensive">
+      <div class="ph">
+        <div class="ph-top">
+          <div><div class="ph-s">Intensive Students</div><div class="ph-title">Conservatory Track — 1:1 Toward U.S. Higher Ed</div><div class="ph-time">1–2 students max, per site · Individualized support</div></div>
+          <button class="cb-btn" onclick="closePanel()">close ×</button>
+        </div>
+        <div class="st-row">
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Selection criteria — not yet defined</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Student Support Coordinator — not yet in place</div>
+          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Financial aid — case-by-case</div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="cb">
+          <div class="cbl">What this tier is</div>
+          <div class="cbb">The 1–2 students per site with real conservatory potential. They move beyond the extra coaching Promising Students get into individualized, one-on-one support aimed squarely at getting them into a U.S. higher-education music program.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">1:1 support toward U.S. higher ed</div>
+          <div class="cbb"><ul>
+            <li>Individualized audition-repertoire planning with lead teachers</li>
+            <li>Guidance through the U.S. conservatory application process — recordings, essays, deadlines</li>
+            <li>Mock auditions and interview prep</li>
+            <li>Direct connections to conservatory faculty and alumni where possible</li>
+            <li>Support navigating visas and international-student logistics</li>
+          </ul></div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Coming eventually — a dedicated Student Support Coordinator</div>
+          <div class="cbb">A Student Support Coordinator role is planned specifically for this tier — someone who builds out scholarship information and resources for international students moving toward U.S. higher ed, and helps students navigate financial aid, visas, and the parts of the application process a teacher alone can't cover.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">Financial aid</div>
+          <div class="cbb">Top students in this tier may be eligible for direct financial aid from PMHU, evaluated case-by-case, alongside the scholarship search the future Coordinator will support.</div>
+        </div>
+        <div class="cb">
+          <div class="cbl">International Music Sessions (IMS)</div>
+          <div class="cbb">A 14-day in-person intensive in the USA — still eventual. Possible relaunch in August 2029. Who gets pulled in, and from which sites, is still open.</div>
+        </div>
+        <div class="tbd">
+          <div class="tbd-l">✦ Open questions</div>
+          <div class="tbd-b">What are the actual selection criteria for narrowing a cohort down to 1–2 Intensive Students? When does the Student Support Coordinator role get created, and who owns this work in the meantime? What's the process for deciding direct PMHU financial aid eligibility? Which students get pulled into the August 2029 IMS relaunch, and from which sites?</div>
         </div>
       </div>
     </div>

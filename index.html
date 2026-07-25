@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MFTF — Music for the Future · Program Cycle</title>
+<title>MFTF — Music for the Future · Program Pyramid</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +26,6 @@
   --accent: #f05c5c; 
   
   /* Seasonal Mappings */
-  --winter: var(--accent); --winter-bg: #fff5f5; --winter-lo: #fca5a5;
   --spring: var(--accent); --spring-bg: #fff5f5; --spring-lo: #fca5a5;
   --summer: var(--accent); --summer-bg: #fff5f5; --summer-lo: #fca5a5;
   --fall: var(--accent);   --fall-bg: #fff5f5;   --fall-lo: #fca5a5;
@@ -67,23 +67,24 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 
 /* DIAGRAM CONTAINER & SVG */
 .diagram-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:2.5rem;overflow:hidden;}
-.cycle-svg{width:100%;max-width:540px;max-height:70vh;}
+.triangle-stage{display:flex;flex-direction:column;align-items:center;gap:.65rem;width:100%;max-width:540px;}
+.ov-link{align-self:flex-end;background:none;border:1px solid var(--border2);border-radius:4px;padding:.32rem .7rem;font-family:'Inter',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.03em;color:var(--accent);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
+.ov-link:hover{background:var(--accent);color:#ffffff;border-color:var(--accent);}
+.ov-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.cycle-svg{width:100%;max-height:64vh;}
 
 /* SVG DIAGRAM INTERACTION STYLES */
-.sn, .hub { cursor:pointer; outline: none; }
+.sn { cursor:pointer; outline: none; }
 .node-bg { transition: stroke 0.2s, filter 0.2s; }
 .sn:hover .node-bg { filter: brightness(0.96); }
 .sn:focus .node-bg, .sn.active .node-bg { stroke: #9ca3af; stroke-width: 1.5px; filter: brightness(0.96); }
-.hub circle.hub-bg { transition: stroke 0.2s, fill 0.2s; }
-.hub:hover circle.hub-bg { fill: #f3f4f6; }
-.hub:focus circle.hub-bg, .hub.active circle.hub-bg { stroke: #9ca3af; stroke-width: 1.5px; }
 
 /* SCALE VIEW */
 .scale-wrap{flex:1;overflow-y:auto;padding:1.1rem 1.25rem;display:none;background:var(--bg);}
 .scale-wrap.visible{display:block;}
 .sc-grid{display:grid;grid-template-columns:80px repeat(4,1fr);gap:.4rem;margin-bottom:.4rem;align-items:start;}
 .sc-head{font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.45rem .55rem;border-radius:4px;text-align:center;line-height:1.4;background:var(--bg2);color:var(--head);border:1px solid var(--border2);}
-.sc-now{border-color:var(--accent);color:var(--accent);background:var(--winter-bg);}
+.sc-now{border-color:var(--accent);color:var(--accent);background:var(--spring-bg);}
 .sr-label{font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:.4rem;line-height:1.4;}
 .sr-cell{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:.5rem .55rem;font-size:.7rem;color:var(--soft);line-height:1.55;}
 .sr-cell ul{list-style:none;}
@@ -165,31 +166,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 
 /* --- NATIVE APP OVERLAY --- */
 @media(max-width:720px){
-  /* 1. Lock the bounds */
   html, body { height: 100% !important; overflow: hidden !important; }
-  
-  /* 2. Make the main container the absolute boundary */
   .main { position: relative !important; display: flex !important; flex-direction: column !important; flex: 1 !important; }
   .left { border: none !important; flex: 1 !important; display: flex !important; flex-direction: column !important; min-height: 0 !important; }
-  
-  /* 3. Keep the SVG perfectly contained in the available space */
   .diagram-wrap { flex: 1 !important; padding: 15px !important; min-height: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
   .cycle-svg { width: 100% !important; height: 100% !important; max-height: 100% !important; }
-  
-  /* 4. Header Stack */
   .hdr { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; padding: 12px 15px !important; height: auto !important; flex-shrink: 0 !important; }
   .hdr-div, .hdr-eye { display: none !important; }
   .hdr-badges { margin-left: 0 !important; flex-wrap: wrap !important; }
-  
-  /* 5. Scale Pathway Table scrolling */
   .scale-wrap { overflow: auto !important; -webkit-overflow-scrolling: touch !important; padding: 15px !important; }
   .sc-grid { min-width: 650px !important; }
-
-  /* 6. APP OVERLAY MAGIC */
   .right { position: static !important; }
   .p-empty { display: none !important; }
-  
-  /* When a panel is active, it completely covers the main area */
   .sp.visible {
     position: absolute !important;
     top: 0 !important;
@@ -202,8 +190,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
     -webkit-overflow-scrolling: touch !important;
     padding-bottom: 20px;
   }
-  
-  /* Sticks the close button to the top of the overlay */
   .ph { position: sticky !important; top: 0 !important; z-index: 105 !important; background: var(--bg) !important; border-bottom: 1px solid var(--border) !important;}
 }
 </style>
@@ -213,7 +199,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 <header class="hdr">
   <div class="hdr-logo">Music for the Future <span>/ MFTF</span></div>
   <div class="hdr-div"></div>
-  <div class="hdr-eye">Program Cycle &amp; Scale Pathway · Working Draft · June 2026</div>
+  <div class="hdr-eye">Program Pyramid &amp; Scale Pathway · Working Draft · June 2026</div>
   <div class="hdr-badges">
     <div class="badge badge-live"><span class="bdot"></span>Live now</div>
     <div class="badge badge-dev"><span class="bdot"></span>In development</div>
@@ -225,79 +211,49 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
   <!-- LEFT -->
   <div class="left">
     <div class="view-toggle">
-      <button class="vt-btn active" id="vt-cycle" onclick="setView('cycle')">Annual Cycle</button>
+      <button class="vt-btn active" id="vt-cycle" onclick="setView('cycle')">Program Pyramid</button>
       <button class="vt-btn" id="vt-scale" onclick="setView('scale')">Scale Pathway</button>
     </div>
 
-    <!-- CYCLE SVG -->
+    <!-- PYRAMID SVG -->
     <div class="diagram-wrap" id="view-cycle">
-      <svg class="cycle-svg" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MFTF annual program cycle diagram">
-        <defs>
-          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-            <path d="M2 1L8 5L2 9" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
+      <div class="triangle-stage">
+        <button class="ov-link" onclick="showPanel('overview')">Program overview →</button>
+        <svg class="cycle-svg" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MFTF program pyramid: Fall residencies form the base, Spring production the middle tier, Summer premiere the peak">
 
-        <!-- Guide ring -->
-        <circle cx="200" cy="210" r="148" fill="none" stroke="#e5e7eb" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <!-- Status legend -->
+          <circle cx="22" cy="20" r="5" fill="none" stroke="#4ebad9" stroke-width="2"/>
+          <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="23">live</text>
+          <circle cx="22" cy="36" r="5" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="3 3"/>
+          <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="39">in dev</text>
 
-        <!-- Status arc legend -->
-        <circle cx="22" cy="20" r="5" fill="none" stroke="#4ebad9" stroke-width="2"/>
-        <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="23">live</text>
-        <circle cx="22" cy="36" r="5" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="3 3"/>
-        <text font-family="Inter,sans-serif" font-weight="600" font-size="8" fill="#6b7280" x="31" y="39">in dev</text>
+          <!-- TOP TIER — SUMMER (peak: the premiere) -->
+          <g class="sn" id="sn-summer" onclick="showPanel('summer')" tabindex="0" role="button" aria-label="Summer: premiere and workshops, the peak of the pyramid">
+            <polygon points="200,40 258.82,165 141.18,165" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
+            <text font-family="Oswald,sans-serif" font-size="13" font-weight="500" fill="#000000" x="200" y="108" text-anchor="middle">SUMMER</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="124" text-anchor="middle">Lincoln Center premiere</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="136" text-anchor="middle">+ new workshops</text>
+            <text font-family="Inter,sans-serif" font-size="7" font-weight="600" fill="#4ebad9" x="200" y="149" text-anchor="middle">Creative writing: live</text>
+          </g>
 
-        <!-- Flow arrows -->
-        <path d="M 158 340 Q 102 312 88 252" fill="none" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arr)"/>
-        <path d="M 76 166 Q 100 104 158 74" fill="none" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arr)"/>
-        <path d="M 244 60 Q 304 84 326 144" fill="none" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arr)"/>
-        <path d="M 332 252 Q 310 314 260 344" fill="none" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- MIDDLE TIER — SPRING (production) -->
+          <g class="sn" id="sn-spring" onclick="showPanel('spring')" tabindex="0" role="button" aria-label="Spring: production and check-in tours, the middle tier">
+            <polygon points="136.47,175 263.53,175 310.59,275 89.41,275" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
+            <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="200" y="210" text-anchor="middle">SPRING</text>
+            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="228" text-anchor="middle">4-wk production</text>
+            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="242" text-anchor="middle">+ check-in tours</text>
+          </g>
 
-        <!-- WINTER (bottom) -->
-        <circle cx="200" cy="358" r="58" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
-        <g class="sn" id="sn-winter" onclick="showPanel('winter')" tabindex="0" role="button" aria-label="Winter: holiday tours">
-          <circle cx="200" cy="358" r="52" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-          <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="200" y="353" text-anchor="middle">WINTER</text>
-          <text font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#f05c5c" x="200" y="369" text-anchor="middle">Holiday tours</text>
-        </g>
+          <!-- BASE TIER — FALL (residencies: broadest reach) -->
+          <g class="sn" id="sn-fall" onclick="showPanel('fall')" tabindex="0" role="button" aria-label="Fall: residencies, the base of the pyramid">
+            <polygon points="84.71,285 315.29,285 360,380 40,380" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
+            <text font-family="Oswald,sans-serif" font-size="15" font-weight="500" fill="#000000" x="200" y="318" text-anchor="middle">FALL</text>
+            <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="336" text-anchor="middle">Residencies · 4 genre tracks</text>
+            <text font-family="Inter,sans-serif" font-size="7.5" font-weight="600" fill="#4ebad9" x="200" y="351" text-anchor="middle">Classical + Writing: live</text>
+          </g>
 
-        <!-- SPRING (left) -->
-        <circle cx="72" cy="210" r="58" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
-        <g class="sn" id="sn-spring" onclick="showPanel('spring')" tabindex="0" role="button" aria-label="Spring: production and check-in tours">
-          <circle cx="72" cy="210" r="52" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-          <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="72" y="200" text-anchor="middle">SPRING</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="72" y="215" text-anchor="middle">4-wk production</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="72" y="229" text-anchor="middle">+ check-in tours</text>
-        </g>
-
-        <!-- SUMMER (top) -->
-        <circle cx="200" cy="68" r="62" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
-        <g class="sn" id="sn-summer" onclick="showPanel('summer')" tabindex="0" role="button" aria-label="Summer: premiere and workshops">
-          <circle cx="200" cy="68" r="56" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-          <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="200" y="52" text-anchor="middle">SUMMER</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="68" text-anchor="middle">Lincoln Center premiere</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="200" y="83" text-anchor="middle">+ new workshops</text>
-          <text font-family="Inter,sans-serif" font-size="7.5" font-weight="600" fill="#4ebad9" x="200" y="97" text-anchor="middle">Creative writing: live</text>
-        </g>
-
-        <!-- FALL (right) -->
-        <circle cx="328" cy="210" r="58" fill="none" stroke="#4ebad9" stroke-width="2" stroke-dasharray="20 40" stroke-dashoffset="0" opacity="0.8"/>
-        <circle cx="328" cy="210" r="58" fill="none" stroke="#636363" stroke-width="2" stroke-dasharray="20 40" stroke-dashoffset="-20" opacity="0.6"/>
-        <g class="sn" id="sn-fall" onclick="showPanel('fall')" tabindex="0" role="button" aria-label="Fall: residencies">
-          <circle cx="328" cy="210" r="52" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.2" class="node-bg"/>
-          <text font-family="Oswald,sans-serif" font-size="14" font-weight="500" fill="#000000" x="328" y="200" text-anchor="middle">FALL</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="328" y="215" text-anchor="middle">Residencies</text>
-          <text font-family="Inter,sans-serif" font-size="8.5" font-weight="500" fill="#f05c5c" x="328" y="229" text-anchor="middle">4 genre tracks</text>
-        </g>
-
-        <!-- CENTER HUB -->
-        <g class="hub" onclick="showPanel('overview')" tabindex="0" role="button" aria-label="Overview">
-          <circle cx="200" cy="210" r="54" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" class="hub-bg"/>
-          <text font-family="Inter,sans-serif" font-size="6.5" font-weight="600" letter-spacing="0.1em" fill="#6b7280" x="200" y="194" text-anchor="middle">PROJECT: MUSIC HEALS US</text>
-          <text font-family="Oswald,sans-serif" font-size="22" font-weight="500" fill="#000000" x="200" y="218" text-anchor="middle">MFTF</text>
-          <text font-family="Inter,sans-serif" font-size="7.5" font-weight="500" fill="#f05c5c" x="200" y="235" text-anchor="middle">tap for overview</text>
-        </g>
-      </svg>
+        </svg>
+      </div>
     </div>
 
     <!-- SCALE PATHWAY VIEW -->
@@ -353,7 +309,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
       </div>
     </div>
 
-    <div class="dfn">Source: Planning sketch (Dana &amp; Molly) + Subscription Model Brainstorm + Scale Pathway PDF · <span style="color:var(--dev)">✦</span> = open question for team</div>
+    <div class="dfn">Source: Planning sketch (Dana &amp; Molly) + Subscription Model Brainstorm + Scale Pathway PDF · <span style="color:var(--dev)">✦</span> = open question for team · Pyramid reads base → peak: Fall residencies reach the most facilities, Spring narrows to one production, Summer culminates in a single premiere.</div>
   </div>
 
   <!-- RIGHT: PANELS -->
@@ -363,7 +319,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
       </svg>
-      <p>Select a season from the cycle diagram, or switch to Scale Pathway for the full growth plan.</p>
+      <p>Select a tier from the pyramid diagram, or switch to Scale Pathway for the full growth plan.</p>
     </div>
 
     <!-- OVERVIEW -->
@@ -384,7 +340,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
       <div class="pb">
         <div class="cb">
           <div class="cbl">What this is</div>
-          <div class="cbb">A year-round creative music program for incarcerated individuals. Participants move through a seasonal arc — holiday tours build relationships, fall residencies deliver coursework, spring produces a full musical theatre work, and summer culminates in a premiere livestreamed from Lincoln Center to all partner facilities.</div>
+          <div class="cbb">A year-round creative music program for incarcerated individuals. Participants move through a seasonal arc — fall residencies deliver coursework across the widest set of facilities, spring narrows to produce a single full musical theatre work, and summer culminates in a premiere livestreamed from Lincoln Center to all partner facilities.</div>
         </div>
         <div class="cb">
           <div class="cbl">Current program structure</div>
@@ -417,49 +373,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
         <div class="tbd">
           <div class="tbd-l">✦ Open questions for Dana &amp; Molly</div>
           <div class="tbd-b">Is the 9-week accredited course format confirmed or still being secured for any track? What is the target cohort size per geography per year? How does the artist pipeline (recruit → audition → train) currently work and who owns it?</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- WINTER -->
-    <div class="sp" id="panel-winter">
-      <div class="ph">
-        <div class="ph-top">
-          <div><div class="ph-s">Winter</div><div class="ph-title">Holiday Tours</div><div class="ph-time">December – February · 5–7 day tours per geography</div></div>
-          <button class="cb-btn" onclick="closePanel()">close ×</button>
-        </div>
-        <div class="st-row">
-          <div class="sp-pill sp-dev"><span class="sp-dot"></span>Not yet at scale — in development</div>
-        </div>
-      </div>
-      <div class="pb">
-        <div class="cb">
-          <div class="cbl">What happens</div>
-          <div class="cbb"><ul>
-            <li>Holiday tours to partner facilities, organized by genre track</li>
-            <li>Creative writing, jazz, classical, and songwriting each tour separately</li>
-            <li>Same musicians return to the same locations each year (relationship continuity)</li>
-            <li>5–7 day tour per geography at full scale</li>
-            <li>Dana + Michael write the musical for the upcoming Spring production during this period</li>
-          </ul></div>
-        </div>
-        <div class="cb">
-          <div class="cbl">Scale target (10-year)</div>
-          <div class="cbb"><ul>
-            <li>4 geographic tours running simultaneously</li>
-            <li>10 venues per tour (40 total holiday touchpoints)</li>
-            <li>Each geography runs its own tour cadence</li>
-          </ul></div>
-          <div class="gg" style="margin-top:.65rem;">
-            <div class="gc"><div class="gc-r">Pacific</div><div class="gc-v">CA + NV · <strong>10 venues</strong></div></div>
-            <div class="gc"><div class="gc-r">Mountain</div><div class="gc-v">UT + CO · <strong>10 venues</strong></div></div>
-            <div class="gc"><div class="gc-r">Central</div><div class="gc-v">Chicago · <strong>10 venues</strong></div></div>
-            <div class="gc"><div class="gc-r">East / Atlantic</div><div class="gc-v">NY + CT · <strong>10 venues</strong></div></div>
-          </div>
-        </div>
-        <div class="tbd">
-          <div class="tbd-l">✦ Open questions</div>
-          <div class="tbd-b">How many facilities currently receive holiday tours? What is the exact format — performances, workshops, or both? Is the musical writing happening concurrently with tours or on a separate timeline? When does the completed musical need to be ready before Spring Week 1 begins?</div>
         </div>
       </div>
     </div>

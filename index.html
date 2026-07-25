@@ -101,13 +101,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--body);displ
 @keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
 /* Panel header */
-.ph{padding:1.35rem 1.65rem 1.1rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;background:var(--bg);}
+.ph{padding:1.35rem 1.65rem 1.1rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;background:url('https://ssl.gstatic.com/atari/images/impression-header.png') center/cover no-repeat, var(--bg);}
 .ph-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.55rem;}
-.ph-s{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.25rem;color:var(--head);}
-.ph-title{font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:400;color:var(--accent);line-height:1.25;letter-spacing:0.2px;}
-.ph-time{font-size:.75rem;font-weight:500;color:var(--muted);margin-top:.4rem;text-transform:uppercase;letter-spacing:0.05em;}
-.cb-btn{background:none;border:1px solid var(--border2);border-radius:4px;padding:.25rem .55rem;font-family:'Inter',sans-serif;font-size:.67rem;font-weight:500;color:var(--muted);cursor:pointer;transition:color .12s,border-color .12s;flex-shrink:0;}
-.cb-btn:hover{color:var(--body);border-color:var(--body);}
+.ph-s{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.25rem;color:#ffffff;text-shadow:0 1px 6px rgba(0,0,0,.35);}
+.ph-title{font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:400;color:#ffb4a8;line-height:1.25;letter-spacing:0.2px;text-shadow:0 1px 6px rgba(0,0,0,.3);}
+.ph-time{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.82);margin-top:.4rem;text-transform:uppercase;letter-spacing:0.05em;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+.cb-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.55);border-radius:4px;padding:.25rem .55rem;font-family:'Inter',sans-serif;font-size:.67rem;font-weight:500;color:#ffffff;cursor:pointer;transition:color .12s,border-color .12s,background .12s;flex-shrink:0;}
+.cb-btn:hover{color:#ffffff;border-color:#ffffff;background:rgba(255,255,255,.22);}
 .st-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem;}
 .sp-pill{font-size:.6rem;font-weight:600;padding:.15rem .48rem;border-radius:3px;display:flex;align-items:center;gap:.28rem;}
 .sp-live{background:var(--live-bg);color:var(--live);border:1px solid #a7e2f2;}
